@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="en-gb">
+    <head>
+        <meta charset="utf-8" />
+        <title>Pok&eacute;dex - API</title>
+        <style>
+            body {
+                font-family: sans-serif;
+                font-size: 100%;
+            }
+        </style>
+    </head>
+    <body>
+        <h1>Pok&eacute;dex - API</h1>
+        <p>Based on: <a href="https://pokeapi.co/">Pok&eacute;Api</a></p>
+
+        <script type="module">
+            import Pockemon from "./api/Pokemon.js";
+
+            const pokemons = new Pockemon();
+
+            // no params: use server default
+            pokemons.get(null).then((response) => {
+                console.log(
+                    "%cPokemon.get()",
+                    "background-color: black; color: white; font-weight: bold;",
+                    response
+                );
+            });
+
+            // with params: page 2 with 12 items
+            pokemons
+                .get({
+                    itemsPerPage: 12,
+                    page: 2,
+                })
+                .then((response) => {
+                    console.log(
+                        "%cPokemon.get(params)",
+                        "background-color: black; color: white; font-weight: bold;",
+                        response
+                    );
+                });
+
+            // by ID
+            pokemons.getById(25).then((response) => {
+                console.log(
+                    "%cPokemon.getById(number)",
+                    "background-color: black; color: white; font-weight: bold;",
+                    response
+                );
+            });
+
+            // by name
+            pokemons.getByName("pikachu").then((response) => {
+                console.log(
+                    "%cPokemon.getByName(string)",
+                    "background-color: black; color: white; font-weight: bold;",
+                    response
+                );
+            });
+        </script>
+    </body>
+</html>
