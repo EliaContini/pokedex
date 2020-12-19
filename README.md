@@ -29,3 +29,7 @@ The run the script
     $ ./dev_server.run
 
 The test will serve on http://localhost:8080/.
+
+# Credits
+
+App icons by https://www.iconfinder.com/iconsets/pokemon-go-vol-2
