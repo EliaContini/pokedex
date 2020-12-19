@@ -8,17 +8,17 @@
  */
 const API_BASE_URL = "https://pokeapi.co/api/v2/";
 const API_END_POINTS = {
-    get: API_BASE_URL + "pokemon/",
+    get: API_BASE_URL + "pokemon/"
 };
 const API_FETCH_INITS = {
     GET: {
         mode: "cors",
         headers: {
-            "Content-Type": "application/json",
+            "Content-Type": "application/json"
         },
-        body: null,
+        body: null
     },
-    POST: null,
+    POST: null
     // ... other HTTP verbs
 };
 const LANGUAGE = "en";
@@ -62,7 +62,7 @@ class Pokemon {
             return Promise.all(requestDetails).then((items) => {
                 let result = {
                     data: [],
-                    dataCount: response.count,
+                    dataCount: response.count
                 };
 
                 items.forEach((item) => {
@@ -182,7 +182,7 @@ class Pokemon {
                 result.push({
                     base: pokemon.stats[index].base_stat,
                     effort: pokemon.stats[index].effort,
-                    name: item.names.filter(this._getLang)[0].name,
+                    name: item.names.filter(this._getLang)[0].name
                 });
             });
 
@@ -216,7 +216,7 @@ class Pokemon {
             let requestDetails = [
                 this.getAbilities(pokemon),
                 this.getMoves(pokemon),
-                this.getStats(pokemon),
+                this.getStats(pokemon)
             ];
 
             return Promise.all(requestDetails).then((data) => {
@@ -226,7 +226,7 @@ class Pokemon {
                     image: pokemon.sprites.front_default,
                     moves: data[1],
                     name: pokemon.name,
-                    stats: data[2],
+                    stats: data[2]
                 };
 
                 return result;

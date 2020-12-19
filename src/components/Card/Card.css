@@ -1,0 +1,23 @@
+.Card {
+    background-color: #eee;
+    border: 1px solid #d3d3d3;
+    border-radius: 3px;
+    margin: 8px;
+    padding: 8px;
+}
+
+.Card-name {
+    font-size: 90%;
+    height: 2.25em;
+}
+
+.Card-image {
+    border: 0;
+    display: block;
+    margin: 8px auto;
+}
+
+.Card-id {
+    color: #999;
+    font-size: 90%;
+}

@@ -1,0 +1,39 @@
+.Pokemons {
+    min-height: 48em;
+    position: relative;
+}
+
+.Pokemons-loading-wrapper {
+    background-color: rgba(255, 255, 255, 0.8);
+    display: none;
+    height: 100%;
+    left: 0;
+    position: absolute;
+    text-align: center;
+    top: 0;
+    width: 100%;
+}
+
+.Pokemons-isLoading .Pokemons-loading-wrapper {
+    display: block;
+}
+
+.Pokemons-isLoading .Pokemons-loading-message {
+    display: block;
+    padding-top: 55%;
+}
+
+.Pokemons-list {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: flex-start;
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    width: 40em;
+}
+
+.Pokemons-item {
+    display: block;
+    width: 25%;
+}
