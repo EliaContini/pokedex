@@ -18,6 +18,7 @@ import PageNotFound from "./pages/PageNotFound";
 import logo from "./logo.svg";
 import "./App.css";
 
+// init App data
 store.dispatch(loading());
 store.dispatch(fetchPokemons({ itemsPerPage: 16, page: 1 }));
 
@@ -37,7 +38,6 @@ function App() {
                                 <NavLink
                                     activeClassName="App-navigation-link-is-selected"
                                     className="App-navigation-link"
-                                    exact
                                     to="/"
                                 >
                                     Pokemons
@@ -51,7 +51,7 @@ function App() {
                             <Route exact path="/">
                                 <Pokemons />
                             </Route>
-                            <Route path="/pokemon">
+                            <Route path="/pokemons/:name/">
                                 <Pokemon />
                             </Route>
                             <Route path="*">

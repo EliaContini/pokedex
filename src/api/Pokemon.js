@@ -139,9 +139,31 @@ class Pokemon {
         let requestDetails = [];
         pokemon.moves.forEach((item) => {
             requestDetails.push(
-                fetch(item.move.url, init).then((move) => {
-                    return move.json();
-                })
+                fetch(item.move.url, init)
+                    .then((move) => {
+                        return move.json();
+                    })
+                    .catch((error) => {
+                        console.error(
+                            "There has been a problem with your fetch operation:",
+                            error
+                        );
+
+                        const unavailable = {
+                            names: [
+                                {
+                                    language: {
+                                        name: LANGUAGE
+                                    },
+                                    name:
+                                        item.move.name +
+                                        " (unavailable details)"
+                                }
+                            ]
+                        };
+
+                        return unavailable;
+                    })
             );
         });
 

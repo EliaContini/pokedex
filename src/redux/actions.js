@@ -1,19 +1,39 @@
-import { POKEMONS_LOADING, POKEMONS_SHOW } from "./actionTypes";
+import {
+    POKEMONS_LOADING,
+    POKEMONS_SHOW,
+    POKEMONS_SHOW_ITEM
+} from "./actionTypes";
 
-import Pokemon from "./../api/Pokemon";
+import PokemonApi from "./../api/Pokemon";
 
-const pokemon = new Pokemon();
+const pokemonApi = new PokemonApi();
+
+export const fetchPokemon = (pokemon) => {
+    return (dispatch) => {
+        const request = pokemonApi.getById(pokemon.id).then((data) => {
+            dispatch({
+                type: POKEMONS_SHOW_ITEM,
+                payload: {
+                    focusOn: data,
+                    status: "loaded"
+                }
+            });
+        });
+
+        return request;
+    };
+};
 
 export const fetchPokemons = (params) => {
     return (dispatch) => {
-        const request = pokemon.get(params).then((data) => {
+        const request = pokemonApi.get(params).then((data) => {
             dispatch({
                 type: POKEMONS_SHOW,
                 payload: {
                     items: data,
                     itemsPerPage: params.itemsPerPage,
                     page: params.page,
-                    status: "load"
+                    status: "loaded"
                 }
             });
         });
