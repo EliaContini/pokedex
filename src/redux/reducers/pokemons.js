@@ -4,7 +4,7 @@ import {
     POKEMONS_SHOW_ITEM
 } from "../actionTypes";
 
-const initialState = {
+export const initialState = {
     focusOn: null, // contains detailed info about a pokemon
     items: null,
     itemsPerPage: 16,

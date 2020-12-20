@@ -1,11 +1,9 @@
 import {
     MY_POKEMONS_ADD,
-    MY_POKEMONS_REMOVE,
-    MY_POKEMONS_SHOW,
-    MY_POKEMONS_SHOW_ITEM
+    MY_POKEMONS_REMOVE
 } from "../actionTypes";
 
-const initialState = {
+export const initialState = {
     myPokemons: [],
     myPokemonsIndex: {}
 };
@@ -66,12 +64,6 @@ const myPokemons = (state = initialState, action) => {
 
             return newState;
         }
-        case MY_POKEMONS_SHOW_ITEM: {
-            const newState = shallowClone(state);
-
-            return newState;
-        }
-        case MY_POKEMONS_SHOW:
         default: {
             return state;
         }

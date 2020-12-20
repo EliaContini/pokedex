@@ -1,8 +1,6 @@
 import {
     MY_POKEMONS_ADD,
-    MY_POKEMONS_REMOVE,
-    MY_POKEMONS_SHOW,
-    MY_POKEMONS_SHOW_ITEM
+    MY_POKEMONS_REMOVE
 } from "./actionTypes";
 
 export const add = (pokemon) => {
