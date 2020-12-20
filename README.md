@@ -1,6 +1,6 @@
 # Pokédex
 
-APIs are build on https://pokeapi.co/
+APIs are build on the top of https://pokeapi.co/
 
 ## Set up development environment
 
@@ -16,7 +16,7 @@ APIs are build on https://pokeapi.co/
 
 ## Development notes
 
-This project uses React, React Redux and React Router.
+This project uses React, React Redux (with Redux Thunk) and React Router.
 
 Some API tests are available in `tests/api` folder. To run them, first be sure
 that in the folder there is a symbolic link to `src/api` folder.
@@ -28,7 +28,7 @@ The run the script
 
     $ ./dev_server.run
 
-The test will serve on http://localhost:8080/.
+The test server will serve on http://localhost:8080/.
 
 # Credits
 

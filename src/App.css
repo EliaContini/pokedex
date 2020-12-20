@@ -1,11 +1,19 @@
 .App {
+    display: flex;
+    flex-direction: column;
+    height: 100%;
     margin: 0 auto;
     padding: 0;
     width: 40em;
 }
 
+@media screen and (max-width: 756px) {
+    .App {
+        width: 100%;
+    }
+}
+
 .App-header {
-    display: block;
     margin: 8px;
     padding: 0;
 }
@@ -25,7 +33,7 @@
 }
 
 .App-navigation {
-    margin: 16px 8px;
+    margin: 8px;
 }
 
 .App-navigation-items {
@@ -52,11 +60,13 @@
 }
 
 .App-main {
+    flex: 1;
+    overflow: auto;
 }
 
 .App-footer {
     color: #999;
     font-size: 90%;
-    margin: 16px 0 0 0;
+    margin: 8px 0;
     text-align: center;
 }

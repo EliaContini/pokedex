@@ -1,5 +1,5 @@
 .Pokemons {
-    min-height: 48em;
+    /* min-height: 48em; */
     position: relative;
 }
 
@@ -30,10 +30,16 @@
     list-style: none;
     margin: 0;
     padding: 0;
-    width: 40em;
+    width: 100%;
 }
 
 .Pokemons-item {
     display: block;
     width: 25%;
+}
+
+@media screen and (max-width: 756px) {
+    .Pokemons-item {
+        width: 50%;
+    }
 }
