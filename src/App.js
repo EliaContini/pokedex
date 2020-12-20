@@ -5,7 +5,24 @@ import store from "./redux/store";
 import { fetchPokemons, loading } from "./redux/actionsPokemons";
 
 import {
-    BrowserRouter as Router,
+    //
+    // it does not work on GitHub pages. To use it, it needs to be able to
+    // configure web server
+    //
+    // For NGINX
+    // server {
+    //     # ...
+    //
+    //     location / {
+    //         try_files $uri $uri/ =404;
+    //     }
+    //
+    //     # ...
+    // }
+    //
+    //
+    // BrowserRouter as Router,
+    HashRouter as Router,
     NavLink,
     Route,
     Switch
@@ -26,8 +43,7 @@ store.dispatch(fetchPokemons({ itemsPerPage: 16, page: 1 }));
 function App() {
     return (
         <Provider store={store}>
-            {/* set basename to run properly on GitHub pages */}
-            <Router basename="/pokedex">
+            <Router>
                 <div className="App">
                     <header className="App-header">
                         <img
