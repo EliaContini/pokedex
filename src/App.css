@@ -1,0 +1,72 @@
+.App {
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+    margin: 0 auto;
+    padding: 0;
+    width: 40em;
+}
+
+@media screen and (max-width: 756px) {
+    .App {
+        width: 100%;
+    }
+}
+
+.App-header {
+    margin: 8px;
+    padding: 0;
+}
+
+.App-logo {
+    display: inline-block;
+    height: 48px;
+    vertical-align: middle;
+    width: 48px;
+}
+
+.App-name {
+    display: inline-block;
+    margin: 0 0 0 8px;
+    padding: 0;
+    vertical-align: middle;
+}
+
+.App-navigation {
+    margin: 8px;
+}
+
+.App-navigation-items {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+}
+
+.App-navigation-item {
+    display: inline-block;
+    margin-right: 16px;
+}
+
+.App-navigation-link {
+    color: black;
+    border-bottom: 3px solid transparent;
+    font-size: 110%;
+    text-decoration: none;
+}
+
+.App-navigation-link-is-selected {
+    border-bottom-color: #f00000;
+    color: #f00000;
+}
+
+.App-main {
+    flex: 1;
+    overflow: auto;
+}
+
+.App-footer {
+    color: #999;
+    font-size: 90%;
+    margin: 8px 0;
+    text-align: center;
+}
