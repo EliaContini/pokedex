@@ -2,7 +2,7 @@ import React from "react";
 
 import { connect } from "react-redux";
 
-import { fetchPokemons, loading } from "./../../redux/actions";
+import { fetchPokemons, loading } from "./../../redux/actionsPokemons";
 
 import "./Pagination.css";
 

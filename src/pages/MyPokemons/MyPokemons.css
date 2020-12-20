@@ -1,0 +1,51 @@
+.MyPokemons {
+    margin: 8px;
+}
+
+.MyPokemons table {
+    border-collapse: collapse;
+    width: 100%;
+}
+
+.MyPokemons td,
+.MyPokemons th {
+    padding: 4px 8px;
+}
+
+.MyPokemons td:last-child {
+    text-align: right;
+}
+
+.MyPokemons th {
+    border-bottom: 1px solid #d3d3d3;
+    text-align: left;
+}
+
+.MyPokemons tbody tr:nth-child(even) {
+    background-color: #eee;
+}
+
+.MyPokemons-button {
+    background-color: #000;
+    border: 1px solid #000;
+    border-radius: 3px;
+    color: #fff;
+    cursor: pointer;
+    display: inline-block;
+    margin: 0 16px 0 0;
+    padding: 2px 8px;
+}
+
+.MyPokemons-button:last-child {
+    margin-right: 0;
+}
+
+.MyPokemons-remove {
+    background-color: #dc3545;
+    border-color: #dc3545;
+}
+
+.MyPokemons-show {
+    background-color: #198754;
+    border-color: #198754;
+}

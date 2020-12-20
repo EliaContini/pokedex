@@ -55,8 +55,8 @@
 }
 
 .App-navigation-link-is-selected {
-    border-bottom-color: #f00000;
-    color: #f00000;
+    border-bottom-color: #b60000;
+    color:#b60000;
 }
 
 .App-main {
@@ -65,7 +65,7 @@
 }
 
 .App-footer {
-    color: #999;
+    color: #595959;
     font-size: 90%;
     margin: 8px 0;
     text-align: center;

@@ -1,8 +1,10 @@
 # Pokédex
 
-Pokédex build on the top of https://pokeapi.co/.
+Pokédex build on the top of [PokéAPI](https://pokeapi.co/).
 
-## 📢️ Demo site 📢️ 
+This project was bootstrapped with [Create React App](https://create-react-app.dev/).
+
+## 📢️ Demo site 🐨️
 
 A Demo site is available at https://eliacontini.github.io/pokedex/.
 

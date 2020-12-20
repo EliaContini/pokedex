@@ -1,7 +1,8 @@
 import React from "react";
 
 import { connect } from "react-redux";
-import { fetchPokemon, loading } from "./../../redux/actions";
+import { add } from "./../../redux/actionsMyPokemons";
+import { fetchPokemon, loading } from "./../../redux/actionsPokemons";
 
 // https://stackoverflow.com/questions/44877821/how-to-navigate-on-path-by-button-click-in-react-router-v4
 import { withRouter } from "react-router";
@@ -15,7 +16,15 @@ class Card extends React.Component {
     constructor(props) {
         super(props);
 
+        this.handleAdd = this.handleAdd.bind(this);
         this.handleClick = this.handleClick.bind(this);
+    }
+
+    handleAdd(event) {
+        event.stopPropagation();
+
+        const pokemon = this.props.item;
+        this.props.handleMyPokemonsAdd(pokemon);
     }
 
     handleClick() {
@@ -54,7 +63,16 @@ class Card extends React.Component {
                     width="96"
                 />
 
-                <p className="Card-id">#{formatId(item)}</p>
+                <div className="Card-footer">
+                    <p className="Card-id">#{formatId(item)} </p>
+                    <button
+                        className="Card-add"
+                        onClick={this.handleAdd}
+                        title={"Add " + name + " to My Pokemons"}
+                    >
+                        Add
+                    </button>
+                </div>
             </div>
         );
     }
@@ -62,6 +80,9 @@ class Card extends React.Component {
 
 const mapDispatchToProps = (dispatch) => {
     return {
+        handleMyPokemonsAdd: (pokemon) => {
+            dispatch(add(pokemon));
+        },
         handleShowDetails: (pokemon) => {
             dispatch(loading());
             dispatch(fetchPokemon(pokemon));

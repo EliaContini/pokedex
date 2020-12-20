@@ -2,7 +2,7 @@ import React from "react";
 
 import { Provider } from "react-redux";
 import store from "./redux/store";
-import { fetchPokemons, loading } from "./redux/actions";
+import { fetchPokemons, loading } from "./redux/actionsPokemons";
 
 import {
     BrowserRouter as Router,
@@ -11,6 +11,7 @@ import {
     NavLink
 } from "react-router-dom";
 
+import MyPokemons from "./pages/MyPokemons";
 import Pokemon from "./pages/Pokemon";
 import Pokemons from "./pages/Pokemons";
 import PageNotFound from "./pages/PageNotFound";
@@ -25,10 +26,17 @@ store.dispatch(fetchPokemons({ itemsPerPage: 16, page: 1 }));
 function App() {
     return (
         <Provider store={store}>
-            <Router basename="/pokedex"> {/* to run properly on GitHub pages */}
+            {/* set basename to run properly on GitHub pages */}
+            <Router basename="/pokedex">
                 <div className="App">
                     <header className="App-header">
-                        <img src={logo} className="App-logo" alt="logo" />
+                        <img
+                            alt="Logo"
+                            className="App-logo"
+                            height="48"
+                            src={logo}
+                            width="48"
+                        />
                         <h1 className="App-name">Pok&eacute;dex</h1>
                     </header>
                     <hr />
@@ -43,15 +51,30 @@ function App() {
                                     Pokemons
                                 </NavLink>
                             </li>
+                            <li className="App-navigation-item">
+                                <NavLink
+                                    activeClassName="App-navigation-link-is-selected"
+                                    className="App-navigation-link"
+                                    to="/my-pokemons/"
+                                >
+                                    My Pokemons
+                                </NavLink>
+                            </li>
                         </ul>
                     </nav>
                     <hr />
                     <main className="App-main">
                         <Switch>
-                            <Route exact path="/">
+                            <Route exact path={["/", "/pokemons/"]}>
                                 <Pokemons />
                             </Route>
-                            <Route path="/pokemons/:name/">
+                            <Route exact path="/pokemons/:name/">
+                                <Pokemon />
+                            </Route>
+                            <Route exact path="/my-pokemons/">
+                                <MyPokemons />
+                            </Route>
+                            <Route exact path="/my-pokemons/:name/">
                                 <Pokemon />
                             </Route>
                             <Route path="*">
