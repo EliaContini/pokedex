@@ -58,7 +58,6 @@ class MyPokemons extends React.Component {
 
     render() {
         const pokemons = this.prepareData();
-        console.log(pokemons);
 
         if (pokemons.length === 0) {
             return (

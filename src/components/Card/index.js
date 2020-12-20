@@ -53,7 +53,7 @@ class Card extends React.Component {
                 onClick={this.handleClick}
                 title={"Show details about " + name}
             >
-                <h3 className="Card-name">{name}</h3>
+                <h2 className="Card-name">{name}</h2>
 
                 <img
                     alt={imageAlt}
