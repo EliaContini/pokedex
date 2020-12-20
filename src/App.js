@@ -7,7 +7,6 @@ import { fetchPokemons, loading } from "./redux/actionsPokemons";
 import {
     BrowserRouter as Router,
     NavLink,
-    Redirect,
     Route,
     Switch
 } from "react-router-dom";
@@ -47,7 +46,18 @@ function App() {
                                 <NavLink
                                     activeClassName="App-navigation-link-is-selected"
                                     className="App-navigation-link"
-                                    to="/pokemons/"
+                                    isActive={(match, location) => {
+                                        const pathname = location.pathname;
+                                        if (
+                                            pathname === "/" ||
+                                            /^\/pokemons\//gi.test(pathname)
+                                        ) {
+                                            return true;
+                                        }
+
+                                        return false;
+                                    }}
+                                    to="/"
                                 >
                                     Pokemons
                                 </NavLink>
@@ -66,10 +76,7 @@ function App() {
                     <hr />
                     <main className="App-main">
                         <Switch>
-                            <Route exact path="/">
-                                <Redirect to="/pokemons/" />
-                            </Route>
-                            <Route exact path="/pokemons/">
+                            <Route exact path={["/", "/pokemons/"]}>
                                 <Pokemons />
                             </Route>
                             <Route exact path="/pokemons/:name/">
