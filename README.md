@@ -1,6 +1,10 @@
 # Pokédex
 
-APIs are build on the top of https://pokeapi.co/
+Pokédex build on the top of https://pokeapi.co/.
+
+## 📢️ Demo site 📢️ 
+
+A Demo site is available at https://eliacontini.github.io/pokedex/.
 
 ## Set up development environment
 
@@ -9,6 +13,8 @@ APIs are build on the top of https://pokeapi.co/
 ## Run dev environment
 
     $ npm start
+
+The dev server will serve on http://localhost:3000/pokedex/.
 
 ## Build
 
@@ -32,4 +38,4 @@ The test server will serve on http://localhost:8080/.
 
 # Credits
 
-App icons by https://www.iconfinder.com/iconsets/pokemon-go-vol-2
+App icons by https://www.iconfinder.com/iconsets/pokemon-go-vol-2/.

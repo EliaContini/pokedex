@@ -25,7 +25,7 @@ store.dispatch(fetchPokemons({ itemsPerPage: 16, page: 1 }));
 function App() {
     return (
         <Provider store={store}>
-            <Router>
+            <Router basename="/pokedex"> {/* to run properly on GitHub pages */}
                 <div className="App">
                     <header className="App-header">
                         <img src={logo} className="App-logo" alt="logo" />
