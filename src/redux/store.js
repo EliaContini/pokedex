@@ -22,12 +22,12 @@ const getState = () => {
         const state = localStorage.getItem("state");
 
         if (state == null) {
-            return undefined;
+            return null;
         }
 
         return JSON.parse(state);
-    } catch (e) {
-        return undefined;
+    } catch (exception) {
+        return null;
     }
 };
 
