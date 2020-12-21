@@ -8,9 +8,9 @@ import PokemonApi from "./../api/Pokemon";
 
 const pokemonApi = new PokemonApi();
 
-export const fetchPokemon = (pokemon) => {
+export const fetchPokemon = (pokemonName) => {
     return (dispatch) => {
-        const request = pokemonApi.getById(pokemon.id).then((data) => {
+        const request = pokemonApi.getByName(pokemonName).then((data) => {
             dispatch({
                 type: POKEMONS_SHOW_ITEM,
                 payload: {

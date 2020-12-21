@@ -1,6 +1,7 @@
 import React from "react";
 
 import { connect } from "react-redux";
+import { fetchPokemon, loading } from "./../../redux/actionsPokemons";
 
 import { formatId, formatName } from "./../../formatter";
 
@@ -8,10 +9,15 @@ import "./Pokemon.css";
 import notAvailable from "./../../static/ImageNotAvailable.png";
 
 class Pokemon extends React.Component {
+    componentDidMount() {
+        const pokemonName = this.props.match.params.name;
+        this.props.handleGetPokemon(pokemonName);
+    }
+
     render() {
         const data = this.props.data;
 
-        if (data.status === "loading") {
+        if (data.status === "loading" || data.focusOn == null) {
             return (
                 <div className="Pokemon">
                     <h2>Pokemon data are loading ...</h2>
@@ -99,8 +105,17 @@ class Pokemon extends React.Component {
     }
 }
 
+const mapDispatchToProps = (dispatch) => {
+    return {
+        handleGetPokemon: (pokemonName) => {
+            dispatch(loading());
+            dispatch(fetchPokemon(pokemonName));
+        }
+    };
+};
+
 const mapStateToProps = (state) => {
     return { data: state.pokemons };
 };
 
-export default connect(mapStateToProps)(Pokemon);
+export default connect(mapStateToProps, mapDispatchToProps)(Pokemon);

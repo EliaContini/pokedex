@@ -1,6 +1,7 @@
 import React from "react";
 
 import { connect } from "react-redux";
+import { fetchPokemons, loading } from "./../../redux/actionsPokemons";
 
 import Card from "./../../components/Card";
 import Pagination from "./../../components/Pagination";
@@ -8,6 +9,10 @@ import Pagination from "./../../components/Pagination";
 import "./Pokemons.css";
 
 class Pokemons extends React.Component {
+    componentDidMount() {
+        this.props.handleGetPokemons();
+    }
+
     render() {
         const data = this.props.data;
         const items = data.items == null ? [] : data.items.data;
@@ -39,8 +44,17 @@ class Pokemons extends React.Component {
     }
 }
 
+const mapDispatchToProps = (dispatch) => {
+    return {
+        handleGetPokemons: () => {
+            dispatch(loading());
+            dispatch(fetchPokemons({ itemsPerPage: 16, page: 1 }));
+        }
+    };
+};
+
 const mapStateToProps = (state) => {
     return { data: state.pokemons };
 };
 
-export default connect(mapStateToProps)(Pokemons);
+export default connect(mapStateToProps, mapDispatchToProps)(Pokemons);

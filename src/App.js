@@ -2,7 +2,6 @@ import React from "react";
 
 import { Provider } from "react-redux";
 import store from "./redux/store";
-import { fetchPokemons, loading } from "./redux/actionsPokemons";
 
 import {
     //
@@ -35,10 +34,6 @@ import PageNotFound from "./pages/PageNotFound";
 
 import logo from "./logo.svg";
 import "./App.css";
-
-// init App data
-store.dispatch(loading());
-store.dispatch(fetchPokemons({ itemsPerPage: 16, page: 1 }));
 
 function App() {
     return (
@@ -95,15 +90,19 @@ function App() {
                             <Route exact path={["/", "/pokemons/"]}>
                                 <Pokemons />
                             </Route>
-                            <Route exact path="/pokemons/:name/">
-                                <Pokemon />
-                            </Route>
+                            <Route
+                                exact
+                                path="/pokemons/:name/"
+                                component={Pokemon}
+                            />
                             <Route exact path="/my-pokemons/">
                                 <MyPokemons />
                             </Route>
-                            <Route exact path="/my-pokemons/:name/">
-                                <Pokemon />
-                            </Route>
+                            <Route
+                                exact
+                                path="/my-pokemons/:name/"
+                                component={Pokemon}
+                            />
                             <Route path="*">
                                 <PageNotFound />
                             </Route>
