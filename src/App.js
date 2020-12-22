@@ -4,8 +4,9 @@ import { Provider } from "react-redux";
 import store from "./redux/store";
 
 import {
+    // BrowserRouter as Router,
     //
-    // it does not work on GitHub pages. To use it, it needs to be able to
+    // It does not work on GitHub pages. To use it, it needs to be able to
     // configure web server
     //
     // For NGINX
@@ -19,8 +20,6 @@ import {
     //     # ...
     // }
     //
-    //
-    // BrowserRouter as Router,
     HashRouter as Router,
     NavLink,
     Route,
@@ -59,9 +58,11 @@ function App() {
                                     className="App-navigation-link"
                                     isActive={(match, location) => {
                                         const pathname = location.pathname;
+
                                         if (
                                             pathname === "/" ||
-                                            /^\/pokemons\//gi.test(pathname)
+                                            /^\/\d+\/\d+\//gi.test(pathname) ||
+                                            /^\/[a-z]+\//gi.test(pathname)
                                         ) {
                                             return true;
                                         }
@@ -87,21 +88,27 @@ function App() {
                     <hr />
                     <main className="App-main">
                         <Switch>
-                            <Route exact path={["/", "/pokemons/"]}>
-                                <Pokemons />
-                            </Route>
+                            <Route component={Pokemons} exact path="/" strict />
                             <Route
+                                component={Pokemons}
                                 exact
-                                path="/pokemons/:name/"
-                                component={Pokemon}
+                                path="/pokemons/:page/:itemsPerPage/"
+                                strict
                             />
-                            <Route exact path="/my-pokemons/">
+                            <Route
+                                component={Pokemon}
+                                exact
+                                path="/pokemon/:name/"
+                                strict
+                            />
+                            <Route exact path="/my-pokemons/" strict>
                                 <MyPokemons />
                             </Route>
                             <Route
+                                component={Pokemon}
                                 exact
                                 path="/my-pokemons/:name/"
-                                component={Pokemon}
+                                strict
                             />
                             <Route path="*">
                                 <PageNotFound />

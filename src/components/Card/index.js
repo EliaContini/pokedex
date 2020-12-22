@@ -30,7 +30,7 @@ class Card extends React.Component {
         const pokemon = this.props.item;
         const pokemonName = pokemon.name;
 
-        this.props.history.push(`/pokemons/${pokemonName}/`);
+        this.props.history.push(`/pokemon/${pokemonName}/`);
     }
 
     render() {

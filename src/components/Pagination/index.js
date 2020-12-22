@@ -1,9 +1,5 @@
 import React from "react";
 
-import { connect } from "react-redux";
-
-import { fetchPokemons, loading } from "./../../redux/actionsPokemons";
-
 import "./Pagination.css";
 
 class Pagination extends React.Component {
@@ -178,13 +174,4 @@ class Pagination extends React.Component {
     }
 }
 
-const mapDispatchToProps = (dispatch) => {
-    return {
-        handleGoTo: (page) => {
-            dispatch(loading());
-            dispatch(fetchPokemons({ itemsPerPage: 16, page: page }));
-        }
-    };
-};
-
-export default connect(null, mapDispatchToProps)(Pagination);
+export default Pagination;

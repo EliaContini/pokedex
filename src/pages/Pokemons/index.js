@@ -3,14 +3,61 @@ import React from "react";
 import { connect } from "react-redux";
 import { fetchPokemons, loading } from "./../../redux/actionsPokemons";
 
+// https://stackoverflow.com/questions/44877821/how-to-navigate-on-path-by-button-click-in-react-router-v4
+import { withRouter } from "react-router";
+
 import Card from "./../../components/Card";
 import Pagination from "./../../components/Pagination";
 
 import "./Pokemons.css";
 
+const DEFAULT_ITEMS_PER_PAGE = 16;
+
 class Pokemons extends React.Component {
+    constructor(props) {
+        super(props);
+
+        this.handleGoTo = this.handleGoTo.bind(this);
+    }
+
     componentDidMount() {
-        this.props.handleGetPokemons();
+        const params = this.props.match.params;
+        const itemsPerPage =
+            params.itemsPerPage == null ? DEFAULT_ITEMS_PER_PAGE : Number(params.itemsPerPage);
+        const page = params.page == null ? 1 : Number(params.page);
+
+        this.props.handleGetPokemons({
+            itemsPerPage: itemsPerPage,
+            page: page
+        });
+    }
+
+    componentDidUpdate(prevProps) {
+        //
+        // User story: if the user is on a page different from 1 and clicks the
+        // navigation tab "Pokemons", the route change is not enough to trigger
+        // the state change (it needs to request 1st page data)
+        //
+        if (
+            this.props.location.pathname === "/" &&
+            prevProps.location.pathname !== this.props.location.pathname
+        ) {
+            this.props.handleGetPokemons({
+                itemsPerPage: DEFAULT_ITEMS_PER_PAGE,
+                page: 1
+            });
+        }
+    }
+
+    handleGoTo(page) {
+        const itemsPerPage = this.props.data.itemsPerPage;
+
+        this.props.history.push(`/pokemons/${page}/${itemsPerPage}/`);
+
+        this.props.handleGetPokemons({
+            itemsPerPage: itemsPerPage,
+            page: page
+        });
     }
 
     render() {
@@ -38,7 +85,7 @@ class Pokemons extends React.Component {
                         );
                     })}
                 </ul>
-                <Pagination data={data} />
+                <Pagination data={data} handleGoTo={this.handleGoTo} />
             </div>
         );
     }
@@ -46,9 +93,9 @@ class Pokemons extends React.Component {
 
 const mapDispatchToProps = (dispatch) => {
     return {
-        handleGetPokemons: () => {
+        handleGetPokemons: (params) => {
             dispatch(loading());
-            dispatch(fetchPokemons({ itemsPerPage: 16, page: 1 }));
+            dispatch(fetchPokemons(params));
         }
     };
 };
@@ -57,4 +104,7 @@ const mapStateToProps = (state) => {
     return { data: state.pokemons };
 };
 
-export default connect(mapStateToProps, mapDispatchToProps)(Pokemons);
+export default connect(
+    mapStateToProps,
+    mapDispatchToProps
+)(withRouter(Pokemons));
