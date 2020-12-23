@@ -1,6 +1,7 @@
 import React from "react";
 
 import { connect } from "react-redux";
+import { add } from "./../../redux/actionsMyPokemons";
 import { fetchPokemons, loading } from "./../../redux/actionsPokemons";
 
 // https://stackoverflow.com/questions/44877821/how-to-navigate-on-path-by-button-click-in-react-router-v4
@@ -17,13 +18,17 @@ class Pokemons extends React.Component {
     constructor(props) {
         super(props);
 
+        this.handleAdd = this.handleAdd.bind(this);
         this.handleGoTo = this.handleGoTo.bind(this);
+        this.handleShowDetails = this.handleShowDetails.bind(this);
     }
 
     componentDidMount() {
         const params = this.props.match.params;
         const itemsPerPage =
-            params.itemsPerPage == null ? DEFAULT_ITEMS_PER_PAGE : Number(params.itemsPerPage);
+            params.itemsPerPage == null
+                ? DEFAULT_ITEMS_PER_PAGE
+                : Number(params.itemsPerPage);
         const page = params.page == null ? 1 : Number(params.page);
 
         this.props.handleGetPokemons({
@@ -49,6 +54,10 @@ class Pokemons extends React.Component {
         }
     }
 
+    handleAdd(pokemon) {
+        this.props.handleMyPokemonsAdd(pokemon);
+    }
+
     handleGoTo(page) {
         const itemsPerPage = this.props.data.itemsPerPage;
 
@@ -58,6 +67,12 @@ class Pokemons extends React.Component {
             itemsPerPage: itemsPerPage,
             page: page
         });
+    }
+
+    handleShowDetails(pokemon) {
+        const pokemonName = pokemon.name;
+
+        this.props.history.push(`/pokemon/${pokemonName}/`);
     }
 
     render() {
@@ -80,7 +95,11 @@ class Pokemons extends React.Component {
                     {items.map((item, idx) => {
                         return (
                             <li className="Pokemons-item" key={idx}>
-                                <Card item={item} />
+                                <Card
+                                    handleAdd={this.handleAdd}
+                                    handleClick={this.handleShowDetails}
+                                    item={item}
+                                />
                             </li>
                         );
                     })}
@@ -96,6 +115,9 @@ const mapDispatchToProps = (dispatch) => {
         handleGetPokemons: (params) => {
             dispatch(loading());
             dispatch(fetchPokemons(params));
+        },
+        handleMyPokemonsAdd: (pokemon) => {
+            dispatch(add(pokemon));
         }
     };
 };

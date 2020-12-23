@@ -1,11 +1,5 @@
 import React from "react";
 
-import { connect } from "react-redux";
-import { add } from "./../../redux/actionsMyPokemons";
-
-// https://stackoverflow.com/questions/44877821/how-to-navigate-on-path-by-button-click-in-react-router-v4
-import { withRouter } from "react-router";
-
 import { formatId, formatName } from "./../../formatter";
 
 import "./Card.css";
@@ -23,14 +17,12 @@ class Card extends React.Component {
         event.stopPropagation();
 
         const pokemon = this.props.item;
-        this.props.handleMyPokemonsAdd(pokemon);
+        this.props.handleAdd(pokemon);
     }
 
     handleClick() {
         const pokemon = this.props.item;
-        const pokemonName = pokemon.name;
-
-        this.props.history.push(`/pokemon/${pokemonName}/`);
+        this.props.handleClick(pokemon);
     }
 
     render() {
@@ -75,12 +67,4 @@ class Card extends React.Component {
     }
 }
 
-const mapDispatchToProps = (dispatch) => {
-    return {
-        handleMyPokemonsAdd: (pokemon) => {
-            dispatch(add(pokemon));
-        }
-    };
-};
-
-export default connect(null, mapDispatchToProps)(withRouter(Card));
+export default Card;
