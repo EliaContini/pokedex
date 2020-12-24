@@ -7,7 +7,10 @@ import { fetchPokemons, loading } from "./../../redux/actionsPokemons";
 // https://stackoverflow.com/questions/44877821/how-to-navigate-on-path-by-button-click-in-react-router-v4
 import { withRouter } from "react-router";
 
+import { formatFeedback } from "./../../formatter";
+
 import Card from "./../../components/Card";
+import Feedback from "./../../components/Feedback";
 import Pagination from "./../../components/Pagination";
 
 import "./Pokemons.css";
@@ -59,7 +62,7 @@ class Pokemons extends React.Component {
     }
 
     handleGoTo(page) {
-        const itemsPerPage = this.props.data.itemsPerPage;
+        const itemsPerPage = this.props.data.pokemons.itemsPerPage;
 
         this.props.history.push(`/pokemons/${page}/${itemsPerPage}/`);
 
@@ -76,7 +79,10 @@ class Pokemons extends React.Component {
     }
 
     render() {
-        const data = this.props.data;
+        const data = this.props.data.pokemons;
+        const feedbackMessage = formatFeedback(
+            this.props.data.feedback.message
+        );
         const items = data.items == null ? [] : data.items.data;
 
         let className = ["Pokemons"];
@@ -86,6 +92,7 @@ class Pokemons extends React.Component {
 
         return (
             <div className={className.join(" ")}>
+                <Feedback message={feedbackMessage} />
                 <h2 className="Pokemons-loading-wrapper">
                     <span className="Pokemons-loading-message">
                         Pokemons data are loading ...
@@ -123,7 +130,7 @@ const mapDispatchToProps = (dispatch) => {
 };
 
 const mapStateToProps = (state) => {
-    return { data: state.pokemons };
+    return { data: state };
 };
 
 export default connect(

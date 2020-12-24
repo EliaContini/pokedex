@@ -34,7 +34,13 @@ const myPokemons = (state = initialState, action) => {
                 return newState;
             }
 
-            return state;
+            const newState = shallowClone(state);
+            newState.actionStatus = {
+                text: "already_exists",
+                type: "info"
+            };
+
+            return newState;
         }
         case MY_POKEMONS_REMOVE: {
             const pokemon = action.payload.pokemon;

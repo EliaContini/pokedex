@@ -6,8 +6,9 @@ import { remove } from "./../../redux/actionsMyPokemons";
 // https://stackoverflow.com/questions/44877821/how-to-navigate-on-path-by-button-click-in-react-router-v4
 import { withRouter } from "react-router";
 
-import { formatId, formatName } from "./../../formatter";
+import { formatFeedback, formatId, formatName } from "./../../formatter";
 
+import Feedback from "./../../components/Feedback";
 import "./MyPokemons.css";
 import notAvailable from "./../../static/ImageNotAvailable.png";
 
@@ -29,7 +30,7 @@ class MyPokemons extends React.Component {
     }
 
     prepareData() {
-        const pokemons = this.props.data.myPokemons;
+        const pokemons = this.props.data.myPokemons.myPokemons;
         let prepared = [];
 
         pokemons.forEach((item) => {
@@ -55,11 +56,13 @@ class MyPokemons extends React.Component {
     }
 
     render() {
+        const feedbackMessage = formatFeedback(this.props.data.feedback.message);
         const pokemons = this.prepareData();
 
         if (pokemons.length === 0) {
             return (
                 <div className="MyPokemons">
+                    <Feedback message={feedbackMessage} />
                     <h2>No Pokemons in your list.</h2>
                 </div>
             );
@@ -67,6 +70,7 @@ class MyPokemons extends React.Component {
 
         return (
             <div className="MyPokemons">
+                <Feedback message={feedbackMessage} />
                 <table>
                     <thead>
                         <tr>
@@ -129,7 +133,7 @@ const mapDispatchToProps = (dispatch) => {
 };
 
 const mapStateToProps = (state) => {
-    return { data: state.myPokemons };
+    return { data: state };
 };
 
 export default connect(

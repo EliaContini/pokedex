@@ -1,7 +1,6 @@
-import {
-    MY_POKEMONS_ADD,
-    MY_POKEMONS_REMOVE
-} from "./actionTypes";
+import { MY_POKEMONS_ADD, MY_POKEMONS_REMOVE } from "./actionTypes";
+
+import { success } from "./actionsFeedback";
 
 export const add = (pokemon) => {
     return (dispatch) => {
@@ -11,6 +10,8 @@ export const add = (pokemon) => {
                 pokemon
             }
         });
+
+        dispatch(success("add", pokemon));
     };
 };
 
@@ -22,5 +23,7 @@ export const remove = (pokemon) => {
                 pokemon
             }
         });
+
+        dispatch(success("remove", pokemon));
     };
 };

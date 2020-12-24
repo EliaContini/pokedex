@@ -1,0 +1,58 @@
+.Feedback {
+    bottom: 16px;
+    margin: 0;
+    padding: 0;
+    position: fixed;
+    right: 16px;
+}
+
+.Feedback-is-hidden {
+    display: block;
+}
+
+.Feedback-button-close {
+    background-color: #eee;
+    border: 1px solid #d3d3d3;
+    border-radius: 50%;
+    color: #000;
+    cursor: pointer;
+    font-weight: bold;
+    padding: 2px;
+    width: 1.75em;
+}
+
+.Feedback-button-close:hover {
+    background-color: #fff;
+}
+
+.Feedback-text {
+    border: 1px solid #000;
+    font-size: 100%;
+    font-weight: normal;
+    margin: 0;
+    padding: 8px;
+}
+/* Colors from Bootstrap https://getbootstrap.com/docs/4.5/components/alerts/ */
+.Feedback-text--error {
+    color: #721c24;
+    background-color: #f8d7da;
+    border-color: #f5c6cb;
+}
+
+.Feedback-text--info {
+    color: #0c5460;
+    background-color: #d1ecf1;
+    border-color: #bee5eb;
+}
+
+.Feedback-text--success {
+    color: #155724;
+    background-color: #d4edda;
+    border-color: #c3e6cb;
+}
+
+.Feedback-text--warning {
+    color: #856404;
+    background-color: #fff3cd;
+    border-color: #ffeeba;
+}
