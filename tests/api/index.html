@@ -19,46 +19,73 @@
 
             const pokemons = new Pockemon();
 
-            // no params: use server default
-            pokemons.get(null).then((response) => {
-                console.log(
-                    "%cPokemon.get()",
-                    "background-color: black; color: white; font-weight: bold;",
-                    response
-                );
-            });
+            const runTestFor = {
+                getById: false,
+                getByName: false,
+                getNoParams: true,
+                getWithParams: false,
+                init: false
+            };
 
-            // with params: page 2 with 12 items
-            pokemons
-                .get({
-                    itemsPerPage: 12,
-                    page: 2,
-                })
-                .then((response) => {
+            // init cache and create indexes for filter
+            if (runTestFor.init === true) {
+                pokemons.init().then((response) => {
                     console.log(
-                        "%cPokemon.get(params)",
+                        "%cPokemon.init()",
                         "background-color: black; color: white; font-weight: bold;",
                         response
                     );
                 });
+            }
+
+            // no params: use server default
+            if (runTestFor.getNoParams === true) {
+                pokemons.get(null).then((response) => {
+                    console.log(
+                        "%cPokemon.get()",
+                        "background-color: black; color: white; font-weight: bold;",
+                        response
+                    );
+                });
+            }
+
+            // with params: page 2 with 12 items
+            if (runTestFor.getWithParams === true) {
+                pokemons
+                    .get({
+                        itemsPerPage: 12,
+                        page: 2
+                    })
+                    .then((response) => {
+                        console.log(
+                            "%cPokemon.get(params)",
+                            "background-color: black; color: white; font-weight: bold;",
+                            response
+                        );
+                    });
+            }
 
             // by ID
-            pokemons.getById(25).then((response) => {
-                console.log(
-                    "%cPokemon.getById(number)",
-                    "background-color: black; color: white; font-weight: bold;",
-                    response
-                );
-            });
+            if (runTestFor.getById === true) {
+                pokemons.getById(25).then((response) => {
+                    console.log(
+                        "%cPokemon.getById(number)",
+                        "background-color: black; color: white; font-weight: bold;",
+                        response
+                    );
+                });
+            }
 
             // by name
-            pokemons.getByName("pikachu").then((response) => {
-                console.log(
-                    "%cPokemon.getByName(string)",
-                    "background-color: black; color: white; font-weight: bold;",
-                    response
-                );
-            });
+            if (runTestFor.getByName === true) {
+                pokemons.getByName("pikachu").then((response) => {
+                    console.log(
+                        "%cPokemon.getByName(string)",
+                        "background-color: black; color: white; font-weight: bold;",
+                        response
+                    );
+                });
+            }
         </script>
     </body>
 </html>

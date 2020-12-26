@@ -18,6 +18,16 @@ class MyPokemons extends React.Component {
 
         this.handleRemove = this.handleRemove.bind(this);
         this.handleShowDetails = this.handleShowDetails.bind(this);
+        this.handleImageNotFound = this.handleImageNotFound.bind(this);
+    }
+
+    handleImageNotFound(item, event) {
+        const target = event.target;
+        target.setAttribute(
+            "alt",
+            "Image not available for " + formatName(item)
+        );
+        target.setAttribute("src", notAvailable);
     }
 
     handleRemove(pokemon) {
@@ -29,35 +39,11 @@ class MyPokemons extends React.Component {
         this.props.history.push(`/my-pokemons/${pokemonName}/`);
     }
 
-    prepareData() {
-        const pokemons = this.props.data.myPokemons.myPokemons;
-        let prepared = [];
-
-        pokemons.forEach((item) => {
-            const name = formatName(item);
-
-            let image = notAvailable;
-            let imageAlt = "Image not available for " + name;
-            if (item.sprites.front_default != null) {
-                image = item.sprites.front_default;
-                imageAlt = "An image of " + name;
-            }
-
-            prepared.push({
-                id: "#" + formatId(item),
-                image: image,
-                imageAlt: imageAlt,
-                name: name,
-                raw: item
-            });
-        });
-
-        return prepared;
-    }
-
     render() {
-        const feedbackMessage = formatFeedback(this.props.data.feedback.message);
-        const pokemons = this.prepareData();
+        const feedbackMessage = formatFeedback(
+            this.props.data.feedback.message
+        );
+        const pokemons = this.props.data.myPokemons.myPokemons;
 
         if (pokemons.length === 0) {
             return (
@@ -82,23 +68,34 @@ class MyPokemons extends React.Component {
                     </thead>
                     <tbody>
                         {pokemons.map((item, idx) => {
+                            const id = formatId(item);
+                            const name = formatName(item);
+                            const image = item.image;
+                            const imageAlt = "An image of " + name;
+
                             return (
                                 <tr key={"my-pokemon" + idx}>
                                     <td>
                                         <img
-                                            alt={item.imageAlt}
+                                            alt={imageAlt}
                                             height="48"
-                                            src={item.image}
+                                            onError={(event) => {
+                                                this.handleImageNotFound(
+                                                    item,
+                                                    event
+                                                );
+                                            }}
+                                            src={image}
                                             width="48"
                                         />
                                     </td>
-                                    <td>{item.name}</td>
-                                    <td>{item.id}</td>
+                                    <td>{name}</td>
+                                    <td>{id}</td>
                                     <td>
                                         <button
                                             className="MyPokemons-button MyPokemons-remove"
                                             onClick={() => {
-                                                this.handleRemove(item.raw);
+                                                this.handleRemove(item);
                                             }}
                                         >
                                             Remove
@@ -106,9 +103,7 @@ class MyPokemons extends React.Component {
                                         <button
                                             className="MyPokemons-button MyPokemons-show"
                                             onClick={() => {
-                                                this.handleShowDetails(
-                                                    item.raw
-                                                );
+                                                this.handleShowDetails(item);
                                             }}
                                         >
                                             Show

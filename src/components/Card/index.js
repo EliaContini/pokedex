@@ -11,6 +11,7 @@ class Card extends React.Component {
 
         this.handleAdd = this.handleAdd.bind(this);
         this.handleClick = this.handleClick.bind(this);
+        this.handleImageNotFound = this.handleImageNotFound.bind(this);
     }
 
     handleAdd(event) {
@@ -25,16 +26,20 @@ class Card extends React.Component {
         this.props.handleClick(pokemon);
     }
 
+    handleImageNotFound(item, event) {
+        const target = event.target;
+        target.setAttribute(
+            "alt",
+            "Image not available for " + formatName(item)
+        );
+        target.setAttribute("src", notAvailable);
+    }
+
     render() {
         const item = this.props.item;
         const name = formatName(item);
-
-        let image = notAvailable;
-        let imageAlt = "Image not available for " + name;
-        if (item.sprites.front_default != null) {
-            image = item.sprites.front_default;
-            imageAlt = "An image of " + name;
-        }
+        const image = item.image;
+        const imageAlt = "An image of " + name;
 
         return (
             <div
@@ -48,6 +53,9 @@ class Card extends React.Component {
                     alt={imageAlt}
                     className="Card-image"
                     height="96"
+                    onError={(event) => {
+                        this.handleImageNotFound(item, event);
+                    }}
                     src={image}
                     width="96"
                 />

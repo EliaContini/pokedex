@@ -6,9 +6,11 @@
  * Dev notes about fetch()
  * https://developer.mozilla.org/en-US/docs/Web/API/WindowOrWorkerGlobalScope/fetch
  */
-const API_BASE_URL = "https://pokeapi.co/api/v2/";
+const API_BASE_URL = "https://pokeapi.co/";
 const API_END_POINTS = {
-    get: API_BASE_URL + "pokemon/"
+    get: API_BASE_URL + "api/v2/pokemon/",
+    media:
+        "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/" // front_default
 };
 const API_FETCH_INITS = {
     GET: {
@@ -34,44 +36,24 @@ class Pokemon {
      * @returns {Promise} - a promise fulfilled with requested data
      */
     async get(params) {
-        let init = Object.assign({}, API_FETCH_INITS.GET);
-        let uri = API_END_POINTS.get;
-
-        if (params != null) {
-            const limit = params.itemsPerPage;
-            const offset = (params.page - 1) * params.itemsPerPage;
-
-            uri = uri + `?limit=${limit}&offset=${offset}`;
+        let cache = this.cache;
+        if (cache == null) {
+            cache = await this.init();
         }
 
-        const response = await fetch(uri, init);
+        let end = 16;
+        let start = 0;
+        if (params != null) {
+            end = params.itemsPerPage * params.page;
+            start = (params.page - 1) * params.itemsPerPage;
+        }
 
-        return response.json().then((response) => {
-            const list = response.results;
+        let result = {
+            data: cache.data.slice(start, end),
+            dataCount: cache.dataCount
+        };
 
-            let requestDetails = [];
-
-            list.forEach((item) => {
-                requestDetails.push(
-                    fetch(item.url, init).then((itemDetails) => {
-                        return itemDetails.json();
-                    })
-                );
-            });
-
-            return Promise.all(requestDetails).then((items) => {
-                let result = {
-                    data: [],
-                    dataCount: response.count
-                };
-
-                items.forEach((item) => {
-                    result.data.push(item);
-                });
-
-                return result;
-            });
-        });
+        return result;
     }
 
     /**
@@ -222,6 +204,65 @@ class Pokemon {
         });
     }
 
+    /**
+     * Manages bootstrapping
+     *
+     * In order to avoid to requests all details about every single Pokemon just
+     * to have ID info, a regex is used to extract ID from resource url property
+     *
+     * 1 - it requests only 1 item in order to receive the count
+     * 2 - it requests all Pokemons
+     * 3 - it creates the cache
+     */
+    async init() {
+        let init = Object.assign({}, API_FETCH_INITS.GET);
+        let uri = API_END_POINTS.get + "?limit=1&offset=0";
+
+        const limitInfo = await fetch(uri, init);
+        const limitInfoData = await limitInfo.json();
+
+        const limit = limitInfoData.count;
+        uri = API_END_POINTS.get + `?limit=${limit}&offset=0`;
+
+        const allPokemons = await fetch(uri, init);
+        const allPokemonsData = await allPokemons.json();
+        const pokemonsList = allPokemonsData.results;
+
+        this.cache = {
+            data: [],
+            dataCount: limit,
+            dataIndexes: {
+                byId: {},
+                byName: {}
+            },
+            // populated calling getById or getByName
+            details: [],
+            detailsCount: 0,
+            detailsIndexes: {
+                byId: {},
+                byName: {}
+            }
+        };
+
+        pokemonsList.forEach((item, index) => {
+            const pattern = new RegExp(API_END_POINTS.get + "(\\d+)/", "gi");
+
+            const pokemonId = Number(pattern.exec(item.url)[1]);
+            const pokemonImage = API_END_POINTS.media + `${pokemonId}.png`;
+
+            this.cache.data.push({
+                id: pokemonId,
+                image: pokemonImage,
+                name: item.name
+            });
+
+            this.cache.dataIndexes.byId[pokemonId] = index;
+            this.cache.dataIndexes.byName[item.name] = index;
+        });
+
+        return this.cache;
+    }
+    // --------------------------------------------------------- private methods
     //
     // https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Classes/Private_class_fields
     //
@@ -229,31 +270,54 @@ class Pokemon {
     // Still not supported on Firefox (under experimental features)
     //
     async _getBy(pokemonIdOrName) {
+        let cache = this.cache;
+        if (cache == null) {
+            cache = await this.init();
+        }
+
+        if (/^[0-9]+$/gi.test(pokemonIdOrName)) {
+            if (pokemonIdOrName in cache.detailsIndexes.byId) {
+                return cache.details[
+                    cache.detailsIndexes.byId[pokemonIdOrName]
+                ];
+            }
+        } else {
+            if (pokemonIdOrName in cache.detailsIndexes.byName) {
+                return cache.details[
+                    cache.detailsIndexes.byName[pokemonIdOrName]
+                ];
+            }
+        }
+
         let init = Object.assign({}, API_FETCH_INITS.GET);
         const uri = API_END_POINTS.get + `${pokemonIdOrName}/`;
 
-        const response = await fetch(uri, init);
+        const pokemonRequest = await fetch(uri, init);
+        const pokemon = await pokemonRequest.json();
 
-        return response.json().then((pokemon) => {
-            let requestDetails = [
-                this.getAbilities(pokemon),
-                this.getMoves(pokemon),
-                this.getStats(pokemon)
-            ];
+        let requestDetails = [
+            this.getAbilities(pokemon),
+            this.getMoves(pokemon),
+            this.getStats(pokemon)
+        ];
+        const pokemonDetails = await Promise.all(requestDetails);
 
-            return Promise.all(requestDetails).then((data) => {
-                let result = {
-                    abilities: data[0],
-                    id: pokemon.id,
-                    image: pokemon.sprites.front_default,
-                    moves: data[1],
-                    name: pokemon.name,
-                    stats: data[2]
-                };
+        const result = {
+            abilities: pokemonDetails[0],
+            id: pokemon.id,
+            image: pokemon.sprites.front_default,
+            moves: pokemonDetails[1],
+            name: pokemon.name,
+            stats: pokemonDetails[2]
+        };
 
-                return result;
-            });
-        });
+        // caching result
+        this.cache.details.push(result);
+        const index = this.cache.details.length - 1;
+        this.cache.detailsIndexes.byId[pokemon.id] = index;
+        this.cache.detailsIndexes.byName[pokemon.name] = index;
+
+        return result;
     }
 
     // Should be #getLang(pokemonIdOrName) { ... }
