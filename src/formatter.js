@@ -7,12 +7,12 @@ export const formatFeedback = (feedback) => {
     let text = null;
     switch (feedback.payload.actionPerformed) {
         case "add": {
-            text = `${pokemonName} added to My Pokemons successfully.`;
+            text = `${pokemonName} added to My Pokemons.`;
 
             break;
         }
         case "remove": {
-            text = `${pokemonName} removed from My Pokemons successfully.`;
+            text = `${pokemonName} removed from My Pokemons.`;
 
             break;
         }

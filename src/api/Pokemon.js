@@ -27,9 +27,11 @@ const LANGUAGE = "en";
 
 class Pokemon {
     /**
-     * Get information about all Pokemons
+     * Get Pokemons according to params
      *
      * @param {object} params
+     * @param {object} params.filter - search string
+     * @param {string} params.filter.input - search string
      * @param {number} params.itemsPerPage
      * @param {number} params.page
      *
@@ -41,17 +43,53 @@ class Pokemon {
             cache = await this.init();
         }
 
-        let end = 16;
-        let start = 0;
-        if (params != null) {
-            end = params.itemsPerPage * params.page;
-            start = (params.page - 1) * params.itemsPerPage;
+        if (params == null) {
+            return this._getPage(cache.data, cache.dataCount, {
+                itemsPerPage: 16,
+                page: 1
+            });
         }
 
-        let result = {
-            data: cache.data.slice(start, end),
-            dataCount: cache.dataCount
-        };
+        if (params.filter == null || params.filter.input === "") {
+            return this._getPage(cache.data, cache.dataCount, params);
+        }
+
+        if (
+            cache.filterParams != null &&
+            params.filter.input === cache.filterParams.input
+        ) {
+            return this._getPage(cache.filtered, cache.filteredCount, params);
+        }
+
+        let index = cache.dataIndexes.byName;
+        let sortBy = "name";
+        if (/^[0-9]+$/gi.test(params.filter.input)) {
+            index = cache.dataIndexes.byId;
+            sortBy = "id";
+        }
+
+        const items = cache.data;
+        let results = [];
+        for (let key in index) {
+            let regex = new RegExp("^" + params.filter.input, "gi");
+            if (regex.test(key) === true) {
+                results.push(items[index[key]]);
+            }
+        }
+
+        results.sort((objectA, objectB) => {
+            return this._sortObjectsBy(objectA, objectB, sortBy, false);
+        });
+
+        cache.filterParams = params;
+        cache.filtered = results;
+        cache.filteredCount = results.length;
+
+        const result = this._getPage(
+            cache.filtered,
+            cache.filteredCount,
+            params
+        );
 
         return result;
     }
@@ -241,7 +279,11 @@ class Pokemon {
             detailsIndexes: {
                 byId: {},
                 byName: {}
-            }
+            },
+            // populated applying filters
+            filterParams: null,
+            filtered: [],
+            filteredCount: 0
         };
 
         pokemonsList.forEach((item, index) => {
@@ -266,7 +308,7 @@ class Pokemon {
     //
     // https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Classes/Private_class_fields
     //
-    // Should be async #getBy(pokemonIdOrName) { ... }
+    // async #getBy(pokemonIdOrName) { ... }
     // Still not supported on Firefox (under experimental features)
     //
     async _getBy(pokemonIdOrName) {
@@ -320,13 +362,48 @@ class Pokemon {
         return result;
     }
 
-    // Should be #getLang(pokemonIdOrName) { ... }
+    // #getLang(pokemonIdOrName) { ... }
     _getLang(item) {
         if (item.language.name === LANGUAGE) {
             return true;
         }
 
         return false;
+    }
+
+    // #getPagination(params) { ... }
+    _getPage(data, dataCount, params) {
+        let end = 16;
+        let start = 0;
+        if (params != null) {
+            end = params.itemsPerPage * params.page;
+            start = (params.page - 1) * params.itemsPerPage;
+        }
+
+        const result = {
+            data: data.slice(start, end),
+            dataCount: dataCount
+        };
+
+        return result;
+    }
+
+    // #sortObjectsBy(itemA, itemB, property, isDescending) { ... }
+    _sortObjectsBy(objectA, objectB, property, isDescending) {
+        isDescending = isDescending == null ? false : isDescending;
+
+        const valueA = objectA[property];
+        const valueB = objectB[property];
+
+        if (valueA > valueB) {
+            return isDescending === true ? -1 : 1;
+        }
+
+        if (valueA < valueB) {
+            return isDescending === true ? 1 : -1;
+        }
+
+        return 0;
     }
 }
 

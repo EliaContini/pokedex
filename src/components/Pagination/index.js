@@ -14,6 +14,10 @@ class Pagination extends React.Component {
         const page = data.page;
         const total = data.items.dataCount;
 
+        if (total <= itemsPerPage) {
+            return [];
+        }
+
         const pages = Math.ceil(total / itemsPerPage);
 
         let items = [];

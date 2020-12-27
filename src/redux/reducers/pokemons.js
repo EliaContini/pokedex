@@ -1,7 +1,7 @@
 import {
-    POKEMONS_LOADING,
-    POKEMONS_SHOW,
-    POKEMONS_SHOW_ITEM
+    POKEMONS_GET,
+    POKEMONS_GET_DETAILS,
+    POKEMONS_LOADING
 } from "../actionTypes";
 
 export const initialState = {
@@ -30,7 +30,7 @@ const pokemons = (state = initialState, action) => {
 
             return newState;
         }
-        case POKEMONS_SHOW: {
+        case POKEMONS_GET: {
             const newState = shallowClone(state);
 
             newState.focusOn = null; // cleanup
@@ -41,7 +41,7 @@ const pokemons = (state = initialState, action) => {
 
             return newState;
         }
-        case POKEMONS_SHOW_ITEM: {
+        case POKEMONS_GET_DETAILS: {
             const newState = shallowClone(state);
 
             newState.focusOn = action.payload.focusOn;

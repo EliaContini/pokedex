@@ -1,7 +1,7 @@
 import {
-    POKEMONS_LOADING,
-    POKEMONS_SHOW,
-    POKEMONS_SHOW_ITEM
+    POKEMONS_GET,
+    POKEMONS_GET_DETAILS,
+    POKEMONS_LOADING
 } from "./actionTypes";
 
 import PokemonApi from "./../api/Pokemon";
@@ -12,7 +12,7 @@ export const fetchPokemon = (pokemonName) => {
     return (dispatch) => {
         const request = pokemonApi.getByName(pokemonName).then((data) => {
             dispatch({
-                type: POKEMONS_SHOW_ITEM,
+                type: POKEMONS_GET_DETAILS,
                 payload: {
                     focusOn: data,
                     status: "loaded"
@@ -24,11 +24,11 @@ export const fetchPokemon = (pokemonName) => {
     };
 };
 
-export const fetchPokemons = (params) => {
+export const getPokemons = (params) => {
     return (dispatch) => {
         const request = pokemonApi.get(params).then((data) => {
             dispatch({
-                type: POKEMONS_SHOW,
+                type: POKEMONS_GET,
                 payload: {
                     items: data,
                     itemsPerPage: params.itemsPerPage,

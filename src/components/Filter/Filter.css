@@ -1,0 +1,14 @@
+.Filter {
+    margin: 8px;
+    padding: 0;
+    text-align: center;
+}
+
+.Filter-input {
+    border: 2px solid #d3d3d3;
+    padding: 4px 8px;
+}
+
+.Filter-input:focus {
+    border-color: #000;
+}

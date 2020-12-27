@@ -2,6 +2,7 @@
 <html lang="en-gb">
     <head>
         <meta charset="utf-8" />
+        <link rel="icon" href="./favicon.ico" />
         <title>Pok&eacute;dex - API</title>
         <style>
             body {
@@ -14,29 +15,21 @@
         <h1>Pok&eacute;dex - API</h1>
         <p>Based on: <a href="https://pokeapi.co/">Pok&eacute;Api</a></p>
 
+        <p>Open the browser console.</p>
+
         <script type="module">
             import Pockemon from "./api/Pokemon.js";
 
             const pokemons = new Pockemon();
 
             const runTestFor = {
-                getById: false,
-                getByName: false,
+                getById: true,
+                getByName: true,
                 getNoParams: true,
-                getWithParams: false,
-                init: false
+                getWithParams: true,
+                getWithParamsFilter: true,
+                init: true
             };
-
-            // init cache and create indexes for filter
-            if (runTestFor.init === true) {
-                pokemons.init().then((response) => {
-                    console.log(
-                        "%cPokemon.init()",
-                        "background-color: black; color: white; font-weight: bold;",
-                        response
-                    );
-                });
-            }
 
             // no params: use server default
             if (runTestFor.getNoParams === true) {
@@ -65,6 +58,37 @@
                     });
             }
 
+            // filter
+            if (runTestFor.getWithParamsFilter === true) {
+                pokemons
+                    .get({
+                        filter: { input: "1" },
+                        itemsPerPage: 10,
+                        page: 1
+                    })
+                    .then((response) => {
+                        console.log(
+                            "%cPokemon.get(paramsFilter)",
+                            "background-color: black; color: white; font-weight: bold;",
+                            response
+                        );
+                    });
+
+                pokemons
+                    .get({
+                        filter: { input: "pi" },
+                        itemsPerPage: 10,
+                        page: 1
+                    })
+                    .then((response) => {
+                        console.log(
+                            "%cPokemon.get(paramsFilter)",
+                            "background-color: black; color: white; font-weight: bold;",
+                            response
+                        );
+                    });
+            }
+
             // by ID
             if (runTestFor.getById === true) {
                 pokemons.getById(25).then((response) => {
@@ -81,6 +105,17 @@
                 pokemons.getByName("pikachu").then((response) => {
                     console.log(
                         "%cPokemon.getByName(string)",
+                        "background-color: black; color: white; font-weight: bold;",
+                        response
+                    );
+                });
+            }
+
+            // init cache and create indexes for filter
+            if (runTestFor.init === true) {
+                pokemons.init().then((response) => {
+                    console.log(
+                        "%cPokemon.init()",
                         "background-color: black; color: white; font-weight: bold;",
                         response
                     );
