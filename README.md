@@ -4,7 +4,7 @@ Pokédex build on the top of [PokéAPI](https://pokeapi.co/).
 
 This project was bootstrapped with [Create React App](https://create-react-app.dev/).
 
-## 📢️ Demo site 🐨️
+## Demo site
 
 A Demo site is available at https://eliacontini.github.io/pokedex/.
 
@@ -20,7 +20,7 @@ The dev server will serve on http://localhost:3000/pokedex/.
 
 ## Build
 
-    $ npm build
+    $ npm run build
 
 ## Development notes
 
